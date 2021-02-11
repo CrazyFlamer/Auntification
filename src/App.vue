@@ -1,11 +1,27 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/login">Login</router-link>
+      <router-link v-if="user == ''" to="/login">Login</router-link>
+      <router-link v-else :to="`/users/${user.login}}`">{{user.name}}</router-link> |
     </div>
-    <router-view/>
+    <router-view :user='user' @auth = "authStart" />
   </div>
 </template>
+
+<script>
+export default {
+  data(){
+    return{
+      user: '',
+    }
+  },
+  methods: {
+    authStart($data){
+      this.user = $data;
+    }
+  }
+}
+</script>
 
 <style>
 #app {

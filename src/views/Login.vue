@@ -24,7 +24,11 @@
     </div>
 </template>
 
+
+
 <script>
+import axios from 'axios';
+
   export default {
     data(){
       return{
@@ -37,20 +41,16 @@
     methods: {
       authenticate()
       {
-        this.axios.get('http://37.77.104.246/api/jsonstorage/?id=539f8121b1571fa15c0bcb06318e6a89')
-          .then(
-            (response) => {
-              let users = response.data;
-              let found = false;
+        axios.get('http://37.77.104.246/api/jsonstorage/?id=539f8121b1571fa15c0bcb06318e6a89')
+          .then(res => {
+              let users = res.data;
               for(let index in users){
                 if(this.login == users[index].login && this.password == users[index].password){
-                  this.$router.push('/users/' + this.myId);
-                  found = true;
+                  this.$router.push('/users/' + users[index]);
+                  this.$emit('auth', users[index]);
                   break;
                 }
               }
-              if(!found)
-                  window.alert('hhhhhhhhhhhhhh')
             }
           )
       }
